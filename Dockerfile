@@ -1,11 +1,14 @@
-# Use the official Nginx image as the base
-FROM nginx:latest
+# Use the Nginx image from Amazon Public ECR (evita rate limit)
+FROM public.ecr.aws/nginx/nginx:1.25-alpine
+
+# Remove default nginx static files (boa prática)
+RUN rm -rf /usr/share/nginx/html/*
 
 # Copy the 2048 game files to the Nginx web root
 COPY . /usr/share/nginx/html
 
-# Expose the default Nginx HTTP port
+# Expose HTTP port
 EXPOSE 80
 
-# Start Nginx when the container starts
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
